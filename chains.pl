@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+#outputs properties of the different chains in tmpchain
 
 for(`cat map.tmp`){
 	@c=split;
@@ -27,5 +28,5 @@ for $p (`ls tmpchain/*.pdb`){
 		print "$_-$n{$_},";
 	}
 	print "\t";
-	system "pdb2seq.pl $p . | tail -1";
+	system "pdb2seq.pl $p";
 }

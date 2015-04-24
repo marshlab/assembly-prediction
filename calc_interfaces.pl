@@ -28,8 +28,6 @@ unless (-e "$pdb.interfaces"){
 
 system "cp $pdb.interfaces interfaces.txt";
 
-
-
 sub sasa{
         $x = sortc($_[0]);
         if ($sa{$x} ne ''){

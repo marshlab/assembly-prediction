@@ -1,18 +1,12 @@
 #!/usr/bin/perl
 
-($pdb, $chain) = @ARGV;
+#outputs the sequence of a pdb file (single chain)
 
-$chain = " " if ($chain eq '_');
-$nam = (split("\/", $pdb))[-1];
-$nam =~ s/\..*$//;
-$disorder = 0;
-
-for(`cat $pdb`){
-        $cx = substr $_, 21,1;
-        $ter{$cx} = 1 if (/^TER/);
+while(<>){
         next unless (/^(ATOM|HETATM)/);
+        $cx = substr $_, 20,2;
+        $ter{$cx} = 1 if (/^TER/);
         next if ($ter{$cx});
-        next unless ($cx eq $chain or $chain eq '.');
         $atom = substr $_, 13, 3;
         $atom =~ s/\s//g;
         next unless ($atom eq 'CA');
@@ -20,17 +14,10 @@ for(`cat $pdb`){
         $res = substr $_, 22,5;
         $res =~ s/\s//g;
 
-        $occ = substr $_, 56, 4;
-        $occ =~ s/\s//g;
-        #next unless ($occ >= 0.5);
-
         $aa = substr $_, 17,3;
         next if ($aa =~ /^(ACE)$/);
-        $xxx=$res;
         next if (int($res) ne $res);
-
         $lines{$res}{++$nr{$res}}=$_;
-
 }
 
 for $i(sort {$a<=>$b} keys %lines){
@@ -49,23 +36,16 @@ for(@out){
         $res =~ s/\s//g;
         $aa = substr $_, 17,3;
 
-
         if ($last eq ''){
                 $start = $res;
         }
 
-        if (($last ne '') and  ($res-$last > 1)){
-                for(2..($res-$last)){
-                        $disorder++;
-                }
-        }
         if (($res < $last) and ($last ne '')){
                 print STDERR "$pdb $res out of order\n";
                 next;
         }
 
         $last = $res;
-
 
         $aa =~ s/ALA/A/;
         $aa =~ s/CYS/C/;
@@ -88,6 +68,8 @@ for(@out){
         $aa =~ s/TRP/W/;
         $aa =~ s/TYR/Y/;
 
+
+	#renaming some common modified residues 
         $aa =~ s/MSE/M/;
         $aa =~ s/SOC/C/; #dioxyselocysteine
         $aa =~ s/P1L/C/; #palmitolyation
@@ -116,4 +98,4 @@ for(@out){
                 $output .= "$aa";
         }
 }
-print ">$nam $start $disorder\n$output\n";
+print "$output\n";
