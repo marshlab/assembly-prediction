@@ -39,7 +39,6 @@ while(@subs){
 	@is=();
 
 	$on{$_} = 1 for (split '\-', $sub);
-
 	for(@interfaces){
 		@c=split;
 		next unless ($on{$c[0]} and $on{$c[1]});
@@ -49,15 +48,15 @@ while(@subs){
 	}
 
 	$best=$bestx=$rest="";
-	for $l (1..(int(slength($sub)/2))){
+	for $l (1..(int(slength($sub)/2))){ #go through all possible subcomplexes up to half the size of the full complex
 		%done=();
-		for $ca (keys %on){
-			nsi($ca, $l);
+		for $ca (sort(keys %on)){
+			nsi($ca, $l); #nsi sets the global variables $best and $bestx, representing the subcomplex that requires the smallest amount of interface to be formed from the current (sub)complex
 		}
 		
 	}
 
-	for(keys %on){
+	for(sort(keys %on)){
 		unless ($bestx =~ /$_/){
 			$rest .= "$_-";
 		}
@@ -75,13 +74,13 @@ while(@subs){
 }
 close S;
 
-sub nsi { #recursion!
+sub nsi { #uses recursion to go through all possible connected subcomplexes of size $nl, starting from subunit or subcomplex $x
 	my ($x, $nl)=@_;
 	$x = sortc($x);
 	return "" if ($done{$x});
 	$done{$x}=1;
-	return "" if (repeats($x));
-	if (slength($x)==$nl){ 
+	return "" if (repeats($x)); #stop if we've repeated a subunit
+	if (slength($x)==$nl){ #recursively calls itself until subcomplex length is equal to $nl
 		$ix = checki($x);
 		if ($ix < $best or $best eq ''){
 			$best = $ix;
@@ -133,9 +132,7 @@ sub checki{
                         $oth .= "$_-";
                 }
         }
-
         $ii = sasa($_[0]) + sasa($oth) - sasa($sub);
-
         return $ii;
 }
 

@@ -22,9 +22,16 @@ if (-e $pdb){
 	$f = "$pdb.pdb1";
 }else{
 	print STDERR "Downloading from http://www.rcsb.org/pdb/files/$pdb.pdb1\n";
-	$url = "http://www.rcsb.org/pdb/files/$pdb.pdb1";
-	system "curl $url > $pdb.pdb1";
-	$f = "$pdb.pdb1";
+
+	if (`which curl`){
+		$url = "http://www.rcsb.org/pdb/files/$pdb.pdb1";
+		system "curl $url > $pdb.pdb1";
+		$f = "$pdb.pdb1";
+	}elsif (`which wget`){
+		system "wget \"$url\"";
+	}else{
+		die "ERROR: need curl or wget to download PDB file\n";
+	}
 }
 unless (-e $f){
 	die "ERROR: no PDB file $f\n";

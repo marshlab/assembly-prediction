@@ -92,7 +92,7 @@ for(@out){
         $aa =~ s/MVA/V/; #
 
         if (length($aa)>1){
-                print STDERR "$pdb can't covert $aa\n";
+                #print STDERR "$pdb can't covert $aa\n";
                 $output .= "X";
         }else{
                 $output .= "$aa";

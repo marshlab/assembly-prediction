@@ -13,8 +13,8 @@ unless (`which areaimol`){
 }
 
 open OUT, "> occ.pdb"; #fill in unoccupied atoms, because areaimol ignores them
-while(<>){
-	if (/^ATOM/){
+for(`cat $ARGV[0]`){
+	if (/^(ATOM|HETATM)/){
 		$line = substr($_, 0, 56);
 		$line .= "1.00";
 		$line .= substr($_,60,50);
@@ -37,5 +37,5 @@ if ($sasa){
 	print "$sasa\n";
 }else{
 	print STDERR "Failed on sasa for $ARGV[0]\n";
-	print "\n";
+	print "-1\n";
 }

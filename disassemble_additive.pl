@@ -39,13 +39,13 @@ while(@subs){
 	$best=$bestx=$rest="";
 	for $l (1..(int(slength($sub)/2))){
 		%done=();
-		for $ca (keys %on){
+		for $ca (sort(keys %on)){
 			nsi($ca, $l);
 		}
 		
 	}
 
-	for(keys %on){
+	for(sort(keys %on)){
 		unless ($bestx =~ /$_/){
 			$rest .= "$_-";
 		}

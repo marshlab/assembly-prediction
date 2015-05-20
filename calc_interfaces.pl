@@ -11,9 +11,11 @@ unless (-e "$pdb.interfaces"){
 
 	for $a (@cx){
 		$sa  = sasa($a);
+		next if ($sa<=0);
 		for $b (@cx){
 			next unless ($b gt $a);
 			$sb  = sasa($b);
+			next if ($sb <= 0);
 			$sab = sasa("$a-$b");
 
 			$i = $sa+$sb-$sab;

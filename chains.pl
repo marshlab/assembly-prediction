@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#outputs properties of the different chains in tmpchain
+#outputs properties of the different chains present in the directory 'tmpchain'
 
 for(`cat map.tmp`){
 	@c=split;
