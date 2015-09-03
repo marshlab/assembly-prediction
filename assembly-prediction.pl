@@ -13,7 +13,7 @@ unless ($pdb){
 }
 
 print "Outputting chains to tmpchain. These chain names are not the same as in the PDB\n";
-system "out_chains.pl $pdb"; #Replace this with out_chains_old.pl if you want to replicate the chain naming for the (dis)assembly pathways in "Gene order is optimized for ordered protein complex assembly" or "Protein complexes are under evolutionary selection to assemble via ordered pathways". This is an older version of the script that ignoreds nucleic acids and ligands, and can result in different chain ids for some complexes.
+system "out_chains.pl $pdb"; #Replace this with out_chains_old.pl if you want to replicate the chain naming for the (dis)assembly pathways in "Gene order is optimized for ordered protein complex assembly" or "Protein complexes are under evolutionary selection to assemble via ordered pathways". This is an older version of the script that ignores nucleic acids and ligands, and can result in different chain ids for some complexes.
 
 for(`chains.pl`){
 	@c=split;
