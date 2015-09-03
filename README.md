@@ -19,7 +19,7 @@ source /Applications/ccp4-6.5/bin/ccp4.setup-sh
 
 This method, with CCP4, has been tested on Linux and Mac OSX systems.
 
-In principle it would be easy to adapt it to any other program that can calculate SASA (eg NACCESS or POPS). All that needs to be done is create a replacement for the sasa.pl script that calls your desired program and returns the total SASA for the protein molecule.
+In principle it should be relatively easy to adapt it to any other program that can calculate SASA (eg NACCESS or POPS). All that would need to be done is to create a replacement for the sasa.pl script that calls your desired program and returns the total SASA for the protein molecule.
 
 USAGE
 assembly-prediction.pl pdbid [-options]
@@ -33,6 +33,8 @@ The default behaviour is to predict assembly pathways, considering only protein 
 -disfull: This calculates the disassembly pathway, without assuming additive SASA. This can be extremely slow (days for a complex with >20 subunits), and usually gives the same or very similar results as -dis. Both this and the default assembly mode and this create a pdbd.sasa file that stores SASA values of subcomplexes, making it much faster upon re-calculation, or upon resuming if calculation is interupted.
 
 -useall: Normally only protein chains are considered. This will include other chains be they nucleic acid or small ligands. We have not validated this experimentally, but it could be useful or interesting in some circumstances.
+
+The script out_chains.pl converts the pdb file of your complex into a set of files corresponding to each chain in the structure. These are created in the 'tmpchain' directory. The chain IDs output are not necessarily the same as those present in the pdb file, since pdb biological units can contain repeated chains. Instead, they are named sequentially A, B, C, etc according to the order they appear in pdb file. The current version of out_chains.pl also outputs individual ligands to their own files, but this means that chain names are not always the same as in refs 1 & 2. To get chain names that are identical to these publications, replace out_chains.pl with out_chains_old.pl within assembly-prediction.pl
 
 REFERENCES
 
