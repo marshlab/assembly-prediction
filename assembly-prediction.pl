@@ -12,10 +12,10 @@ unless ($pdb){
 	die "No PDB specified. See README for usage\n";
 }
 
-print "Outputting chains to tmpchain. These chain names are not the same as in the PDB\n";
-system "out_chains.pl $pdb"; #Replace this with out_chains_old.pl if you want to replicate the chain naming for the (dis)assembly pathways in "Gene order is optimized for ordered protein complex assembly" or "Protein complexes are under evolutionary selection to assemble via ordered pathways". This is an older version of the script that ignores nucleic acids and ligands, and can result in different chain ids for some complexes.
+print "Outputting chains to tmpchain. These chain names are not necessarily the same as in the PDB file\n";
+system "./out_chains.pl $pdb"; #Replace this with out_chains_old.pl if you want to replicate the chain naming for the (dis)assembly pathways in "Gene order is optimized for ordered protein complex assembly" or "Protein complexes are under evolutionary selection to assemble via ordered pathways". This is an older version of the script that ignores nucleic acids and ligands, and can result in different chain ids for some complexes.
 
-for(`chains.pl`){
+for(`./chains.pl`){
 	@c=split;
 	$l = length($c[6]);
 	if ($l > 1 and length($c[1])==1){
@@ -36,19 +36,19 @@ for(`chains.pl`){
 if ($flag{dis}){
 	$form = "broken";
 	print "Disassembling from full complex, assuming additive interface sizes (fast)\n";
-	system "calc_interfaces.pl $pdb";
-	$script = "disassemble_additive.pl";
-	$sort = "| sort_disassembly.pl";
+	system "./calc_interfaces.pl $pdb";
+	$script = "./disassemble_additive.pl";
+	$sort = "| ./sort_disassembly.pl";
 }elsif($flag{disfull}){
 	$form = "broken";
 	print "Disassembling from full complex, using non-additive interface sizes (this can be very slow for big complexes)\n";
-	system "calc_interfaces.pl $pdb";
-	$script = "disassemble_nonadditive.pl $pdb";
-	$sort = "| sort_disassembly.pl";
+	system "./calc_interfaces.pl $pdb";
+	$script = "./disassemble_nonadditive.pl $pdb";
+	$sort = "| ./sort_disassembly.pl";
 }else{
 	$form = "formed";
 	print "Assembling from free subunits\n";
-	$script = "assemble.pl $pdb";
+	$script = "./assemble.pl $pdb";
 }
 if ($flag{useall}){
 	print "Including all chains (including non-protein)\n";

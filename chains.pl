@@ -28,5 +28,5 @@ for $p (`ls tmpchain/*.pdb`){
 		print "$_-$n{$_},";
 	}
 	print "\t";
-	system "pdb2seq.pl $p";
+	system "./pdb2seq.pl $p";
 }
