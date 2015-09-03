@@ -5,8 +5,7 @@ push @cs, (0..9);
 push @cs, (a..z); #gets us above 60 
 
 $lim = 1;
-
-@f = `cat $ARGV[0].pdb1`;
+$pdb = $ARGV[0];
 
 system "rm -rf tmpchain";
 mkdir 'tmpchain';
