@@ -70,6 +70,9 @@ sub sasa{
 	}
 	$sa{$x} = `sasa.pl $f`;
 	chomp $sa{$x};
+	if ($sa{$x}<0){
+		die "ERROR: failed to calculate SASA for $pdb chain(s) $x. Probably the structure is too big - try recompiling AREAIMOL with increased MAXATOM and MAXINT.\n";
+	}
 	print S "$x\t$sa{$x}\n";
 	return $sa{$x};
 }

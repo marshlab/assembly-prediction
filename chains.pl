@@ -24,7 +24,7 @@ for $p (`ls tmpchain/*.pdb`){
 		}
 	}
 	print "$cx\t$map{$cx}\t$a\t$h\t$y\t";
-	for(keys %n){
+	for(sort(keys %n)){
 		print "$_-$n{$_},";
 	}
 	print "\t";

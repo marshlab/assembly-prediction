@@ -14,7 +14,7 @@ while(<>){
 	$N++;
 }
 
-for(keys %x){
+for(sort(keys %x)){
 	$sub .= "$_-";
 }
 
