@@ -38,7 +38,7 @@ The script out_chains.pl converts the pdb file of your complex into a set of fil
 
 REFERENCES
 
-1) Wells JA, Bergendahl LT & Marsh JA (2015) Operon gene order is optimized for protein complex assembly.
+1) Wells JA, Bergendahl LT & Marsh JA (2016) Operon gene order is optimized for ordered protein complex assembly. Cell Reports (in press)
 
 2) Marsh JA, Hernandez H, Hall Z, Ahnert SE, Perica T, Robinson CV & Teichmann SA (2013) Protein complexes are under evolutionary selection to assemble via ordered pathways. Cell 153:461-470
 
