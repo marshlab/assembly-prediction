@@ -44,7 +44,7 @@ sub sasa{
                 }
                 $f = "tmpsub.pdb";
         }
-        $sa{$x} = `sasa.pl $f`;
+        $sa{$x} = `./sasa.pl $f`;
         chomp $sa{$x};
         return $sa{$x};
 }

@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 
-$pdb = shift @ARGV;
+if (@ARGV){
+        $chain_on{$_}=1 for(@ARGV);
+}else{
+        $all_on=1;
+}
 
 if (-e "$pdb.sasa"){
 	open S, "< $pdb.sasa";
@@ -12,18 +16,15 @@ if (-e "$pdb.sasa"){
 close S;
 open S, ">> $pdb.sasa";
 
-if (@ARGV){
-        $chain_on{$_}=1 for(@ARGV);
-}else{
-        $all_on=1;
-}
-
 open I, "< interfaces.txt";
 while(<I>){
 	@c=split;
 	next unless ($c[2] > 1);
 	next unless ($all_on or ($chain_on{$c[0]} and $chain_on{$c[1]}));
-	push @interfaces, "$c[0] $c[1]\n";
+	push @interfaces, "$c[0] $c[1] $c[2]\n";
+	$isize{"$c[0] $c[1]"} = $c[2];
+	$isize{"$c[1] $c[0]"} = $c[2];
+	$ni++;
 	$all{$c[0]}=1;
 	$all{$c[1]}=1;
 }
@@ -36,6 +37,7 @@ while(@subs){
 	$sub = pop (@subs);
 
 	%on=%ixn=%n=();
+	@is=();
 
 	$on{$_} = 1 for (split '-', $sub);
 
@@ -44,6 +46,7 @@ while(@subs){
 		next unless ($on{$c[0]} and $on{$c[1]});
 		$ixn{$c[0]}[++$n{$c[0]}] = $c[1];
 		$ixn{$c[1]}[++$n{$c[1]}] = $c[0];
+		push @is, "$c[0] $c[1] $c[2]";
 	}
 
 	$best=$bestx=$rest="";
@@ -82,14 +85,23 @@ sub nsi { #recursion!
 		my %duni=();
 		$duni{$_} = 1 for (split '-', $x);
 		for $cx (split '-', $x){
+			$max=0;
 			for (1..$n{$cx}){
 				$i = $ixn{$cx}[$_];
 				next if ($duni{$i});
 				$duni{$i}=1;
-				$y = sortc("$x-$i");
-				next if ($done{$y});
-				nsi($y, $nl);
+				$inew=0;
+				for $cx (split '-', $x){
+					$inew += $isize{"$i $cx"};
+				}
+				if ($inew > $max){ #add the subunit that forms the most interface with the subcomplex
+					$max = $inew;
+					$addi = $i;
+				}
 			}
+			$y = sortc("$x-$addi");
+			next if ($done{$y});
+			nsi($y, $nl);
 		}
 	}
 }
@@ -100,12 +112,6 @@ sub sortc{
 		push @chars, $cx;
 	}
 	return (join "-", sort(@chars));
-}
-
-sub slength{
-	my $sln=0;
-	$sln++ for (split '-', $_[0]);
-	return $sln;
 }
 
 sub checki{
@@ -123,6 +129,12 @@ sub checki{
         return $ii;
 }
 
+sub slength{
+	my $sln=0;
+	$sln++ for (split '-', $_[0]);
+	return $sln;
+}
+
 sub sasa{
         $x = sortc($_[0]);
         if ($sa{$x} ne ''){
@@ -137,7 +149,7 @@ sub sasa{
                 }
                 $f = "tmpsub.pdb";
         }
-        $sa{$x} = `sasa.pl $f`;
+        $sa{$x} = `./sasa.pl $f`;
         chomp $sa{$x};
 	print S "$x\t$sa{$x}\n";
         return $sa{$x};
