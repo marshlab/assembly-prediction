@@ -7,6 +7,8 @@ push @cs, (a..z); #gets us above 60
 $lim = 1;
 $pdb = $ARGV[0];
 
+$pdburl = "http://files.rcsb.org/download";
+
 system "rm -rf tmpchain";
 mkdir 'tmpchain';
 
@@ -15,10 +17,10 @@ if (-e $pdb){
 }elsif (-e "$pdb.pdb1"){
 	$f = "$pdb.pdb1";
 }else{
-	print STDERR "Downloading from http://www.rcsb.org/pdb/files/$pdb.pdb1\n";
+	print STDERR "Downloading from $pdburl/$pdb.pdb1\n";
 
 	if (`which curl`){
-		$url = "http://www.rcsb.org/pdb/files/$pdb.pdb1";
+		$url = "$pdburl/$pdb.pdb1";
 		system "curl $url > $pdb.pdb1";
 		$f = "$pdb.pdb1";
 	}elsif (`which wget`){

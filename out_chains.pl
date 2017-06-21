@@ -3,6 +3,8 @@
 #if filename $pdb exists, it will use that; otherwise it will try to download from PDB
 #iterates at TER or ENDMDL
 
+$pdburl = "http://files.rcsb.org/download";
+
 $pdb = $ARGV[0];
 @cs = (A..Z);
 push @cs, (0..9);
@@ -21,10 +23,10 @@ if (-e $pdb){
 }elsif (-e "$pdb.pdb1"){
 	$f = "$pdb.pdb1";
 }else{
-	print STDERR "Downloading from http://www.rcsb.org/pdb/files/$pdb.pdb1\n";
+	print STDERR "Downloading from $pdburl/$pdb.pdb1\n";
 
 	if (`which curl`){
-		$url = "http://www.rcsb.org/pdb/files/$pdb.pdb1";
+		$url = "$pdburl/$pdb.pdb1";
 		system "curl $url > $pdb.pdb1";
 		$f = "$pdb.pdb1";
 	}elsif (`which wget`){
